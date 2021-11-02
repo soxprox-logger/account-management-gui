@@ -47,7 +47,7 @@ metadata:
   name: logger-account-management
 spec:
   rules:
-  - host: "account-management.logger.simoncarr.co.uk"
+  - host: "account-management-dev.logger.simoncarr.co.uk"
     http:
       paths:
       - pathType: Prefix
