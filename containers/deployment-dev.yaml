@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: logger-account-management-dev
-        image: simoncarr/soxprox-logger-account-management-gui:latest
+        image: simoncarr/soxprox-logger-account-management-gui:development
         resources:
           requests:
             cpu: 100m
@@ -47,11 +47,11 @@ metadata:
   name: logger-account-management-dev
 spec:
   rules:
-  - host: "account-management-dev.logger.simoncarr.co.uk"
+  - host: "account-management.logger.simoncarr.co.uk"
     http:
       paths:
       - pathType: Prefix
-        path: "/"
+        path: "/dev"
         backend:
           service:
             name: logger-account-management-dev
