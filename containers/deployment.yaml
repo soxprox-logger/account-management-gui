@@ -5,11 +5,13 @@ metadata:
 spec:
   selector:
     matchLabels:
+      run: logger-account-management
       app: logger-account-management
   replicas: 3
   template:
     metadata:
       labels:
+        run: logger-account-management
         app: logger-account-management
     spec:
       containers:
