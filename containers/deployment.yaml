@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: logger-account-management
-        image: simoncarr/vuejs_netlify:latest
+        image: simoncarr/soxprox-logger-account-management-gui:latest
         resources:
           requests:
             cpu: 100m
