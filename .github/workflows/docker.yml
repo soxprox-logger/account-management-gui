@@ -32,19 +32,21 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run:
           docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-      # Runs a single command using the runners shell
-      - name: Docker build
-        run: |
-          docker build -t simoncarr/soxprox-logger-account-management-gui -f containers/Dockerfile .
       - name: Docker push development
         if: github.ref == 'refs/heads/development'
-        run: docker push simoncarr/soxprox-logger-account-management-gui:development
+        run: |
+          docker build -t simoncarr/soxprox-logger-account-management-gui:development -f containers/Dockerfile .
+          docker push simoncarr/soxprox-logger-account-management-gui:development
       - name: Docker push release
         if: github.ref == 'refs/heads/release'
-        run: docker push simoncarr/soxprox-logger-account-management-gui:release
+        run: |
+          docker build -t simoncarr/soxprox-logger-account-management-gui:release -f containers/Dockerfile .
+          docker push simoncarr/soxprox-logger-account-management-gui:release
       - name: Docker push latest
         if: github.ref == 'refs/heads/master'
-        run: docker push simoncarr/soxprox-logger-account-management-gui:latest
+        run: |
+          docker build -t simoncarr/soxprox-logger-account-management-gui:latest -f containers/Dockerfile .
+          docker push simoncarr/soxprox-logger-account-management-gui:latest
       - name: Docker push version
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
@@ -52,4 +54,5 @@ jobs:
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
           # Strip "v" prefix from tag name
           [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+          docker build -t simoncarr/soxprox-logger-account-management-gui:$VERSION -f containers/Dockerfile .
           docker push simoncarr/soxprox-logger-account-management-gui:$VERSION
