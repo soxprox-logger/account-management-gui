@@ -47,4 +47,9 @@ jobs:
         run: docker push simoncarr/soxprox-logger-account-management-gui:latest
       - name: Docker push version
         if: startsWith(github.ref, 'refs/tags/v')
-        run: docker push simoncarr/soxprox-logger-account-management-gui:${{ github.ref }}
+        run: |
+          # Strip git ref prefix from version
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          # Strip "v" prefix from tag name
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+          docker push simoncarr/soxprox-logger-account-management-gui:$VERSION
