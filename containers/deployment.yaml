@@ -5,7 +5,6 @@ metadata:
 spec:
   selector:
     matchLabels:
-      run: logger-account-management
       app: logger-account-management
   replicas: 3
   template:
