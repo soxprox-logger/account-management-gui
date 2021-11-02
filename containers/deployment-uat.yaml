@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logger-account-management-uat
+  namespace: soxprox-uat
+spec:
+  selector:
+    matchLabels:
+      app: logger-account-management-uat
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        run: logger-account-management-uat
+        app: logger-account-management-uat
+    spec:
+      containers:
+      - name: logger-account-management-uat
+        image: simoncarr/soxprox-logger-account-management-gui:latest
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: logger-account-management-uat
+  labels:
+    run: logger-account-management-uat
+    app: logger-account-management-uat
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+  selector:
+    run: logger-account-management-uat
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: logger-account-management-uat
+spec:
+  rules:
+  - host: "account-management-uat.logger.simoncarr.co.uk"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: logger-account-management-uat
+            port:
+              number: 80
