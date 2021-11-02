@@ -1,20 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: logger-account-management
+  name: logger-account-management-prod
+  namespace: soxprox-prod
 spec:
   selector:
     matchLabels:
-      app: logger-account-management
+      app: logger-account-management-prod
   replicas: 3
   template:
     metadata:
+      namespace: soxprox-prod
       labels:
-        run: logger-account-management
-        app: logger-account-management
+        run: logger-account-management-prod
+        app: logger-account-management-prod
     spec:
       containers:
-      - name: logger-account-management
+      - name: logger-account-management-prod
         image: simoncarr/soxprox-logger-account-management-gui:latest
         resources:
           requests:
@@ -26,30 +28,32 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: logger-account-management
+  namespace: soxprox-prod
+  name: logger-account-management-prod
   labels:
-    run: logger-account-management
-    app: logger-account-management
+    run: logger-account-management-prod
+    app: logger-account-management-prod
 spec:
   ports:
   - port: 80
     protocol: TCP
   selector:
-    run: logger-account-management
+    run: logger-account-management-prod
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: logger-account-management
+  namespace: soxprox-prod
+  name: logger-account-management-prod
 spec:
   rules:
-  - host: "account-management.logger.simoncarr.co.uk"
+  - host: "account-management-prod.logger.simoncarr.co.uk"
     http:
       paths:
       - pathType: Prefix
         path: "/"
         backend:
           service:
-            name: logger-account-management
+            name: logger-account-management-prod
             port:
               number: 80
